@@ -1,1 +1,38 @@
-1
+name: Build Windows EXE
+
+on:
+  push:
+    branches:
+      - main  # 或者你想要运行此脚本的分支
+
+jobs:
+  build:
+    name: Build EXE for Windows
+    runs-on: windows-latest  # 使用最新的 Windows 环境
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2  # 检出你的仓库代码
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'  # 选择合适的 Python 版本
+          architecture: 'x86'  # 指定 32 位架构
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Install PyInstaller
+        run: pip install pyinstaller
+
+      - name: Build EXE with PyInstaller
+        run: pyinstaller --onefile --clean GetWeChatKey.py  # 使用 PyInstaller 构建 EXE
+
+      - name: Upload EXE as Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: windows-exe
+          path: dist/main.exe  
