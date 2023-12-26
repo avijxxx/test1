@@ -18,7 +18,7 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: '3.8'  # 选择合适的 Python 版本
-          architecture: 'x86'  # 指定 32 位架构
+          architecture: 'x64'  # 指定 32 位架构
 
       - name: Install Dependencies
         run: |
